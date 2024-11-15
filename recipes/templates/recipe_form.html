@@ -1,0 +1,109 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit Recipe{% else %}Add Recipe{% endif %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background: url("{% static 'images/background_6.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .form-control {
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+        }
+        .btn-custom {
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        h1 {
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <!-- Form Heading -->
+    <h1 class="text-center mb-4 text-primary font-weight-bold">
+        {% if form.instance.pk %}Edit Recipe{% else %}<b>ADD RECIPE</b>{% endif %}
+    </h1>
+
+    <!-- Recipe Form Card -->
+    <div class="card p-4 shadow-lg">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Structured Form Fields -->
+            <div class="form-group">
+                <label for="name" class="font-weight-bold">Recipe Name</label>
+                <input type="text" name="name" value="{{ form.name.value|default:'' }}" class="form-control" id="name" placeholder="Enter recipe name">
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="font-weight-bold">Description</label>
+                <textarea name="description" class="form-control" id="description" rows="3" placeholder="Enter description">{{ form.description.value|default:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ingredients" class="font-weight-bold">Ingredients</label>
+                <textarea name="ingredients" class="form-control" id="ingredients" rows="3" placeholder="List ingredients">{{ form.ingredients.value|default:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions" class="font-weight-bold">Instructions</label>
+                <textarea name="instructions" class="form-control" id="instructions" rows="4" placeholder="Add instructions">{{ form.instructions.value|default:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="meal_type" class="font-weight-bold">Meal Type</label>
+                <select name="meal_type" class="form-control" id="meal_type">
+                    <option value="Breakfast" {% if form.meal_type.value == "Breakfast" %}selected{% endif %}>Breakfast</option>
+                    <option value="Lunch" {% if form.meal_type.value == "Lunch" %}selected{% endif %}>Lunch</option>
+                    <option value="Dinner" {% if form.meal_type.value == "Dinner" %}selected{% endif %}>Dinner</option>
+                    <option value="Snack" {% if form.meal_type.value == "Snack" %}selected{% endif %}>Snack</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="image" class="font-weight-bold">Recipe Image</label>
+                <input type="file" name="image" class="form-control-file" id="image">
+            </div>
+
+            <div class="form-group">
+                <label for="preparation_time" class="font-weight-bold">Preparation Time (minutes)</label>
+                <input type="number" name="preparation_time" value="{{ form.preparation_time.value|default:'' }}" class="form-control" id="preparation_time" placeholder="Enter preparation time">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group text-center mt-4">
+                <button type="submit" class="btn btn-success btn-custom btn-lg px-5 py-2">Save Recipe</button>
+            </div>
+        </form>
+
+        <!-- Back to Recipe List Button -->
+        <div class="text-center mt-3">
+            <a href="{% url 'recipe_list' %}" class="btn btn-outline-primary btn-custom px-5 py-2">Back to Recipe List</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

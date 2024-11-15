@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }} - Recipe Detail</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background: url("{% static 'images/background_6.jpg' %}");
+        }
+        .recipe-detail-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            border-radius: 25px;
+        }
+        .recipe-image {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Recipe Detail Card -->
+            <div class="card recipe-detail-card p-4">
+                <h1 class="text-center mb-4 text-primary">{{ recipe.name }}</h1>
+
+                <!-- Recipe Image -->
+                <div class="text-center mb-4">
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="recipe-image">
+                </div>
+
+                <!-- Recipe Description -->
+                <p class="font-weight-bold">Description:</p>
+                <p>{{ recipe.description }}</p>
+
+                <!-- Ingredients -->
+                <p class="font-weight-bold">Ingredients:</p>
+                <ul>
+                    {% for ingredient in recipe.ingredients.splitlines %}
+                        <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Instructions -->
+                <p class="font-weight-bold">Instructions:</p>
+                <p>{{ recipe.instructions }}</p>
+
+                <!-- Preparation Time -->
+                <p class="font-weight-bold">Preparation Time:</p>
+                <p>{{ recipe.preparation_time }} minutes</p>
+
+                <!-- Edit and Delete Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'recipe_update' recipe.id %}" class="btn btn-primary btn-custom">Edit Recipe</a>
+                    <a href="{% url 'recipe_list' %}" class="btn btn-outline-primary btn-custom px-4 py-2">Back to Recipe List</a>
+                    <form method="post" action="{% url 'recipe_delete' recipe.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-custom">Delete Recipe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
